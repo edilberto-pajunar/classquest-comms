@@ -1,3 +1,4 @@
+import 'package:classquest/provider/image_data.dart';
 import 'package:classquest/provider/random_word_provider.dart';
 import 'package:classquest/views/dashboard_screen.dart';
 import 'package:classquest/views/login_screen.dart';
@@ -28,23 +29,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RandomWordProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => RandomWordProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ImageDataProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           textTheme: GoogleFonts.secularOneTextTheme(),
         ),
         home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return DashboardScreen();
-            } else {
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  return DashboardScreen();
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text("${snapshot.hasError}"),
+                  );
+                }
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return LoginScreen();
-            }
-          },
-        ),
+            }),
       ),
     );
   }

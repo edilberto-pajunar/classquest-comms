@@ -50,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Login"),
       ),
@@ -99,92 +100,94 @@ class _LoginScreenState extends State<LoginScreen> {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      padding: EdgeInsets.all(100),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextWidget(
-                            label: "Login",
-                            size: 50,
-                          ),
-                          FormWidget(
-                            label: "Email",
-                            controller: _emailController,
-                            icon: Icons.email,
-                            validator: (value) =>
-                                value != null && !EmailValidator.validate(value)
-                                    ? "Enter a valid email"
-                                    : null,
-                          ),
-                          FormWidget(
-                            label: "Password",
-                            controller: _passwordController,
-                            icon: Icons.lock,
-                            isPass: true,
-                            validator: (value) {
-                              if (value != null && value.length < 6) {
-                                return "Enter min. 6 characters";
-                              }
-                            },
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Checkbox(
-                                      value: isRemember,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isRemember = !isRemember;
-                                        });
-                                      }),
-                                  TextWidget(
-                                    label: "Remember Me",
-                                  ),
-                                ],
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: TextWidget(label: "Forgot Password?"),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 50,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: login,
-                              child: _isLoading
-                                  ? CircularProgressIndicator()
-                                  : Text(
-                                      "Login",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 100),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextWidget(
+                              label: "Login",
+                              size: 50,
+                            ),
+                            FormWidget(
+                              label: "Email",
+                              controller: _emailController,
+                              icon: Icons.email,
+                              validator: (value) => value != null &&
+                                      !EmailValidator.validate(value)
+                                  ? "Enter a valid email"
+                                  : null,
+                            ),
+                            FormWidget(
+                              label: "Password",
+                              controller: _passwordController,
+                              icon: Icons.lock,
+                              isPass: true,
+                              validator: (value) {
+                                if (value != null && value.length < 6) {
+                                  return "Enter min. 6 characters";
+                                }
+                              },
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                        value: isRemember,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isRemember = !isRemember;
+                                          });
+                                        }),
+                                    TextWidget(
+                                      label: "Remember Me",
                                     ),
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(20),
-                                backgroundColor: Colors.purpleAccent.shade200,
-                                elevation: 0,
+                                  ],
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: TextWidget(label: "Forgot Password?"),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: login,
+                                child: _isLoading
+                                    ? CircularProgressIndicator()
+                                    : Text(
+                                        "Login",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(20),
+                                  backgroundColor: Colors.purpleAccent.shade200,
+                                  elevation: 0,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          InkWell(
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Signup()));
-                              },
-                              child: TextWidget(
-                                  label: "Don't have an account? Sign up")),
-                        ],
+                            SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Signup()));
+                                },
+                                child: TextWidget(
+                                    label: "Don't have an account? Sign up")),
+                          ],
+                        ),
                       ),
                     ),
                   ),
