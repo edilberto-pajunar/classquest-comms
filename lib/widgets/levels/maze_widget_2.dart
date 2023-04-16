@@ -289,6 +289,7 @@ class _MazeLevelTwoState extends State<MazeLevelTwo> {
     if (_playerX == 5 && _playerY == 0) {
       await audioPlayer.play(UrlSource(tCorrectAudio));
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -324,6 +325,7 @@ class _MazeLevelTwoState extends State<MazeLevelTwo> {
     } else if (_playerX == 14 && _playerY == 8) {
       await audioPlayer.play(UrlSource(tCorrectAudio));
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
