@@ -8,15 +8,15 @@ import 'package:classquest/widgets/levels/maze_widget_3.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/levels/level_two.dart';
+
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<RandomWordProvider>(
-        builder: ((context, value, child) => LevelOne()),
-      ),
+      body: LevelOne(),
     );
   }
 }

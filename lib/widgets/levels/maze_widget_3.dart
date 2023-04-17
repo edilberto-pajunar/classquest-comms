@@ -1087,7 +1087,12 @@ class _MazeLevelThreeState extends State<MazeLevelThree> {
 
   void finish() async {
     if ((_playerX == 1 || _playerX == 2) && _playerY == 30) {
-      await audioPlayer.play(UrlSource(tCorrectAudio));
+      try {
+        audioPlayer.play(UrlSource(tWrongAudio));
+      } catch (e) {
+        print("error: $e");
+        audioPlayer.play(UrlSource(tWrongAudio));
+      }
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -1108,7 +1113,9 @@ class _MazeLevelThreeState extends State<MazeLevelThree> {
                 ),
               ],
             ),
-            content: Text("You are now done with the Classquest"),
+            content: Text(
+              "Explanation: The plural subject \"boys\" require the singular verb \"play.\" The correct answer is \"play.",
+            ),
             actions: <Widget>[
               ElevatedButton(
                 child: Text('OK'),
@@ -1131,6 +1138,9 @@ class _MazeLevelThreeState extends State<MazeLevelThree> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            content: Text(
+              "Explanation: The plural subject \"boys\" require the singular verb \"play.\" The correct answer is \"play.",
+            ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1189,12 +1199,12 @@ class _MazeLevelThreeState extends State<MazeLevelThree> {
           } else if (x == _playerX && y == _playerY) {
             return Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage(
-                  tAvatar,
+                image: DecorationImage(
+                  image: AssetImage(
+                    tAvatar,
+                  ),
                 ),
-                fit: BoxFit.cover,
-              )),
+              ),
             );
           } else {
             return Container(

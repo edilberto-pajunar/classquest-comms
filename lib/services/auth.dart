@@ -10,63 +10,42 @@ class Auth {
 
   // sign in with email
 
-  Future signIn(String email, String password, context) async {
+  Future<String> signIn(String email, String password, context) async {
+    String res = "Some error occurred";
     try {
       UserCredential _cred = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      final snackBar = SnackBar(
-        duration: Duration(seconds: 2),
-        content: Text("Successfully logged in"),
-        backgroundColor: Colors.green,
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } catch (error) {
-      const snackBar = SnackBar(
-        duration: Duration(seconds: 2),
-        content: Text("Wrong authentication"),
-        backgroundColor: Colors.red,
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      print("Error $error");
+      res = "success";
+    } catch (e) {
+      res = e.toString();
+      print("Error: $res");
     }
+
+    return res;
   }
 
   // sign up with email
 
-  Future signUp(String email, String password, String username, context) async {
+  Future<String> signUp(String email, String password, context) async {
+    String res = "Some error occurred";
     try {
       UserCredential _cred = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
-      // add to firestore
-
-      UserModel _user =
-          UserModel(email: email, password: password, username: username);
-
-      await _db.collection("users").doc(_cred.user!.uid).set(_user.toJson());
-
-      const snackBar = SnackBar(
-        duration: Duration(seconds: 2),
-        content: Text("Signed in"),
-        backgroundColor: Colors.green,
+        email: email,
+        password: password,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } on FirebaseAuthException catch (error) {
-      final snackBar = SnackBar(
-        duration: Duration(seconds: 2),
-        content: Text("Failed: $error"),
-        backgroundColor: Colors.red,
-      );
+      _auth.signInWithEmailAndPassword(email: email, password: password);
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      print("Error: $error");
+      res = "success";
+    } on FirebaseAuthException catch (e) {
+      res = e.toString();
+      print("Error: $e");
     }
+
+    return res;
   }
 
   // sign out

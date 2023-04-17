@@ -287,7 +287,12 @@ class _MazeLevelTwoState extends State<MazeLevelTwo> {
 
   void finish() async {
     if (_playerX == 5 && _playerY == 0) {
-      await audioPlayer.play(UrlSource(tCorrectAudio));
+      try {
+        audioPlayer.play(UrlSource(tCorrectAudio));
+      } catch (e) {
+        print("error: $e");
+        audioPlayer.play(UrlSource(tCorrectAudio));
+      }
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -308,7 +313,9 @@ class _MazeLevelTwoState extends State<MazeLevelTwo> {
                 ),
               ],
             ),
-            content: Text("You can now move to Level 3',"),
+            content: Text(
+              "Explanation: The singular subject \"book\" requires the singular verb \"has.\" The correct answer is \"has.",
+            ),
             actions: <Widget>[
               ElevatedButton(
                 child: Text('OK'),
@@ -323,12 +330,20 @@ class _MazeLevelTwoState extends State<MazeLevelTwo> {
         },
       );
     } else if (_playerX == 14 && _playerY == 8) {
-      await audioPlayer.play(UrlSource(tCorrectAudio));
+      try {
+        audioPlayer.play(UrlSource(tWrongAudio));
+      } catch (e) {
+        print("error: $e");
+        audioPlayer.play(UrlSource(tWrongAudio));
+      }
       showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            content: Text(
+              "Explanation: The singular subject \"book\" requires the singular verb \"has.\" The correct answer is \"has.",
+            ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -391,7 +406,6 @@ class _MazeLevelTwoState extends State<MazeLevelTwo> {
                 image: AssetImage(
                   tAvatar,
                 ),
-                fit: BoxFit.cover,
               )),
             );
           } else {

@@ -31,15 +31,26 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
-  Future login() async {
+  Future login(context) async {
     final isValidForm = _key.currentState!.validate();
     if (isValidForm) {
       setState(() {
         _isLoading = true;
       });
-      await Auth().signIn(_emailController.text.trim(),
-          _passwordController.text.trim(), context);
 
+      String res = await Auth().signIn(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+        context,
+      );
+
+      if (res == "success") {
+        showSnackBar("Logged in succesfully!", context, true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()));
+      } else {
+        showSnackBar(res, context, false);
+      }
       setState(() {
         _isLoading = false;
       });
@@ -158,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: login,
+                                onPressed: () => login(context),
                                 child: _isLoading
                                     ? CircularProgressIndicator()
                                     : Text(

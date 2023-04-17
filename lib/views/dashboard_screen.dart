@@ -115,11 +115,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     height: 10,
                   ),
                   ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text("Logout"),
-                      onTap: () async {
-                        await Auth().signOut();
-                      }),
+                    leading: Icon(Icons.logout),
+                    title: Text("Logout"),
+                    onTap: () async {
+                      await Auth().signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

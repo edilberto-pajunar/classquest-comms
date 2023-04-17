@@ -69,7 +69,6 @@ class _MazeLevelOneState extends State<MazeLevelOne> {
                 image: AssetImage(
                   tAvatar,
                 ),
-                fit: BoxFit.cover,
               )),
             );
           } else {
@@ -144,7 +143,12 @@ class _MazeLevelOneState extends State<MazeLevelOne> {
 
   void finish() async {
     if (_playerX == 0 && _playerY == 4) {
-      await audioPlayer.play(UrlSource(tCorrectAudio));
+      try {
+        audioPlayer.play(UrlSource(tCorrectAudio));
+      } catch (e) {
+        print("error: $e");
+        audioPlayer.play(UrlSource(tCorrectAudio));
+      }
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -167,8 +171,8 @@ class _MazeLevelOneState extends State<MazeLevelOne> {
                 ),
               ],
             ),
-            content: Text('You reached endpoint ${provider.number}!'),
-            actions: <Widget>[
+            content: Text('${provider.explanationWord}'),
+            actions: [
               ElevatedButton(
                 child: Text('OK'),
                 onPressed: () {
@@ -190,12 +194,20 @@ class _MazeLevelOneState extends State<MazeLevelOne> {
         },
       );
     } else if (_playerX == 7 && _playerY == 4) {
-      await audioPlayer.play(UrlSource(tWrongAudio));
+      try {
+        audioPlayer.play(UrlSource(tWrongAudio));
+      } catch (e) {
+        print("error: $e");
+        audioPlayer.play(UrlSource(tWrongAudio));
+      }
       showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
+          final provider =
+              Provider.of<RandomWordProvider>(context, listen: false);
           return AlertDialog(
+            content: Text('${provider.explanationWord}'),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -32,23 +32,29 @@ class _SignupState extends State<Signup> {
     _usernameController.dispose();
   }
 
-  void signUp() async {
+  Future signUp(context) async {
     final isValidForm = _key.currentState!.validate();
     if (isValidForm) {
       setState(() {
         _isLoading = true;
       });
-      await Auth().signUp(
-          _emailController.text.trim(),
-          _passwordController.text.trim(),
-          _usernameController.text.trim(),
-          context);
+      String res = await Auth().signUp(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+        context,
+      );
+
+      if (res == "success") {
+        showSnackBar("Created account succesfully!", context, true);
+
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()));
+      } else {
+        showSnackBar(res, context, false);
+      }
       setState(() {
         _isLoading = false;
       });
-
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }
 
@@ -125,7 +131,7 @@ class _SignupState extends State<Signup> {
                           Container(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: signUp,
+                              onPressed: () => signUp,
                               child: _isLoading
                                   ? CircularProgressIndicator()
                                   : Text(
